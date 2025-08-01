@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"><title>Yeni Restoran Kaydı</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+<div class="container" style="max-width: 500px;">
+    <div class="box">
+        <h1 class="title has-text-centered">Yeni Restoran Kaydı Oluştur</h1>
+        {if $hata}<div class="notification is-danger is-light">{$hata}</div>{/if}
+        <form method="post">
+            <div class="field"><label class="label">Restoran / Kafe Adı</label><div class="control"><input class="input" type="text" name="restoran_adi" required></div></div>
+            <div class="field"><label class="label">Yönetici E-posta</label><div class="control"><input class="input" type="email" name="eposta" required></div></div>
+            <div class="field"><label class="label">Şifre</label><div class="control"><input class="input" type="password" name="sifre" required></div></div>
+            <div class="field"><button class="button is-success is-fullwidth">Kaydol ve Yönetim Paneline Git</button></div>
+        </form>
+    </div>
+    <div class="has-text-centered mt-4"><a href="login.php">Zaten bir hesabın var mı? Giriş Yap</a></div>
+</div>
+</section>
+</body>
+</html>

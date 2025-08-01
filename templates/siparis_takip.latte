@@ -1,0 +1,116 @@
+{layout 'layout_musteri.latte'}
+
+{block content}
+    <div class="has-text-centered">
+        <h1 class="title">Sipariş Takip Ekranı</h1>
+        <p class="subtitle">Masa: <strong>{$siparis['masa_adi']}</strong> - Sipariş No: <strong>#{$siparis['id']}</strong></p>
+    </div>
+
+    <div class="box">
+        <article class="message" id="status-message">
+            <div class="message-header"><p>Mevcut Durum</p></div>
+            <div class="message-body" id="status-text">Yükleniyor...</div>
+        </article>
+
+        <progress class="progress" value="0" max="100" id="status-progress">0%</progress>
+        
+        <ul class="steps is-small is-centered">
+            <li class="steps-segment" id="step-yeni">
+                <span class="steps-marker"><span class="icon"><i class="fas fa-receipt"></i></span></span>
+                <div class="steps-content"><p>Sipariş Alındı</p></div>
+            </li>
+            <li class="steps-segment" id="step-hazirlaniyor">
+                <span class="steps-marker"><span class="icon"><i class="fas fa-fire"></i></span></span>
+                <div class="steps-content"><p>Hazırlanıyor</p></div>
+            </li>
+            <li class="steps-segment" id="step-tamamlandi">
+                <span class="steps-marker"><span class="icon"><i class="fas fa-check-double"></i></span></span>
+                <div class="steps-content"><p>Tamamlandı</p></div>
+            </li>
+        </ul>
+    </div>
+    <div class="has-text-centered mt-5">
+        <a href="menu.php?masa={$siparis['masa_id']}" class="button is-link is-medium">
+            <span class="icon"><i class="fas fa-book-open"></i></span>
+            <span>Ana Menüye Dön</span>
+        </a>
+    </div>
+    <script>
+        const siparisId = {$siparis['id']};
+        const statusMessage = document.getElementById('status-message');
+        const statusText = document.getElementById('status-text');
+        const statusBar = document.getElementById('status-progress');
+        const stepYeni = document.getElementById('step-yeni');
+        const stepHazirlaniyor = document.getElementById('step-hazirlaniyor');
+        const stepTamamlandi = document.getElementById('step-tamamlandi');
+        let durumKontrol; // setInterval'ı durdurabilmek için değişkeni dışarıda tanımla
+
+        function durumuGuncelle(durum) {
+            stepYeni.classList.remove('is-active');
+            stepHazirlaniyor.classList.remove('is-active');
+            stepTamamlandi.classList.remove('is-active');
+            statusMessage.className = 'message';
+
+            switch (durum) {
+                case 'Hazırlanıyor':
+                    statusMessage.classList.add('is-info');
+                    statusText.innerText = 'Siparişiniz mutfakta hazırlanıyor. Lütfen bekleyin.';
+                    statusBar.value = 65;
+                    statusBar.className = 'progress is-info';
+                    stepYeni.classList.add('is-active');
+                    stepHazirlaniyor.classList.add('is-active');
+                    break;
+                case 'Tamamlandı':
+                    statusMessage.classList.add('is-success');
+                    statusText.innerText = 'Siparişiniz tamamlandı. Masanıza servis ediliyor. Afiyet olsun!';
+                    statusBar.value = 100;
+                    statusBar.className = 'progress is-success';
+                    stepYeni.classList.add('is-active');
+                    stepHazirlaniyor.classList.add('is-active');
+                    stepTamamlandi.classList.add('is-active');
+                    clearInterval(durumKontrol); 
+                    break;
+                
+                // --- YENİ EKLENEN BÖLÜM ---
+                case 'İptal Edildi':
+                    statusMessage.classList.add('is-danger');
+                    statusText.innerText = 'Üzgünüz, siparişiniz iptal edilmiştir. Lütfen personel ile iletişime geçin.';
+                    statusBar.value = 100;
+                    statusBar.className = 'progress is-danger';
+                    // İptal durumunda adımları göstermeye gerek yok, veya farklı bir stil uygulanabilir.
+                    // Örneğin, ilk adımı aktif yapıp, diğerlerini pasif bırakabiliriz.
+                    stepYeni.classList.add('is-active');
+                    clearInterval(durumKontrol);
+                    break;
+                // ---------------------------
+
+                case 'Yeni':
+                default:
+                    statusMessage.classList.add('is-warning');
+                    statusText.innerText = 'Siparişiniz alındı ve mutfağa iletiliyor...';
+                    statusBar.value = 25;
+                    statusBar.className = 'progress is-warning';
+                    stepYeni.classList.add('is-active');
+                    break;
+            }
+        }
+
+        // Sayfa ilk yüklendiğinde mevcut durumu ayarla
+        durumuGuncelle({$siparis['durum']});
+
+        // Her 5 saniyede bir sipariş durumunu sunucudan kontrol et
+        durumKontrol = setInterval(function() {
+            fetch('api_siparis_durumu.php?id=' + siparisId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.durum) {
+                        durumuGuncelle(data.durum);
+                    }
+                })
+                .catch(error => {
+                    console.error('Durum kontrol edilirken hata oluştu:', error);
+                    clearInterval(durumKontrol);
+                });
+        }, 5000);
+    </script>
+{/block}    

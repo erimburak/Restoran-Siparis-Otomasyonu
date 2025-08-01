@@ -1,0 +1,35 @@
+{layout 'layout.latte'}
+
+{block content}
+    <a href="latte.php?action=ekle" class="button is-primary mb-4">
+        <span class="icon"><i class="fas fa-plus"></i></span>
+        <span>Yeni Ürün Ekle</span>
+    </a>
+
+    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead><tr><th>ID</th><th>Ürün Adı</th><th>Stok Adedi</th><th>Fiyat</th><th>İşlemler</th></tr></thead>
+        <tbody>
+            {foreach $urunler as $urun}
+            <tr>
+                <td>{$urun['id']}</td>
+                <td>{$urun['ad']}</td>
+                <td>{$urun['stok']}</td>
+                <td>{$urun['fiyat']} TL</td>
+                <td>
+                    <a href="?action=duzenle&id={$urun['id']}" class="button is-small is-info" title="Düzenle"><span class="icon"><i class="fas fa-edit"></i></span></a>
+                    <a href="?action=sil&id={$urun['id']}" class="button is-small is-danger js-confirm" title="Sil" data-message="Bu ürünü kalıcı olarak silmek istediğinizden emin misiniz?"><span class="icon"><i class="fas fa-trash"></i></span></a>
+
+                    {if $urun['qr_code_path']}
+                        <a href="{$urun['qr_code_path']}" class="button is-small is-black" target="_blank" title="QR Görüntüle"><span class="icon"><i class="fas fa-eye"></i></span></a>
+                        <a href="qr.php?id={$urun['id']}" class="button is-small is-warning js-confirm" title="QR Yenile" data-message="Mevcut QR kod silinip yenisi oluşturulacak. Emin misiniz?"><span class="icon"><i class="fas fa-sync-alt"></i></span></a>
+                    {else}
+                        <a href="qr.php?id={$urun['id']}" class="button is-small is-black js-confirm" title="QR Oluştur" data-message="Bu ürün için yeni bir QR kodu oluşturulacak. Emin misiniz?"><span class="icon"><i class="fas fa-qrcode"></i></span></a>
+                    {/if}
+                </td>
+            </tr>
+            {else}
+            <tr><td colspan="5" class="has-text-centered">Henüz hiç ürün eklenmemiş.</td></tr>
+            {/foreach}
+        </tbody>
+    </table>
+{/block}

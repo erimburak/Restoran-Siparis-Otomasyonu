@@ -1,0 +1,23 @@
+{layout 'layout_musteri.latte'}
+
+{block content}
+    <div class="has-text-centered">
+        <span class="icon is-large has-text-success">
+            <i class="fas fa-check-circle fa-3x"></i>
+        </span>
+        <h1 class="title is-2 mt-4">Siparişiniz Alındı!</h1>
+        <p class="subtitle is-4">En kısa sürede hazırlanarak masanıza getirilecektir.</p>
+        <p>Afiyet olsun!</p>
+        <br>
+
+        {* Eğer geçerli bir sipariş ID'si geldiyse, takip butonunu göster *}
+        {if $siparisId}
+            <a href="siparis_takip.php?id={$siparisId}" class="button is-primary is-large">
+                <span class="icon"><i class="fas fa-eye"></i></span>
+                <span>Siparişimi Takip Et</span>
+            </a>
+        {/if}
+        
+        
+    </div>
+{/block}

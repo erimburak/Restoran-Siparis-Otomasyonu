@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+{{! ... head bölümü ... }}
+<body>
+<section class="section">
+<div class="container" style="max-width: 400px;">
+    <h1 class="title has-text-centered">İki Aşamalı Doğrulama</h1>
+    
+    {* Simülasyon kutusunu siliyoruz ve sabit bir metin ekliyoruz *}
+    <div class="notification is-info mt-4">
+        Lütfen <strong>{{kullanici.eposta}}</strong> adresine gönderilen 6 haneli kodu girin.
+    </div>
+    
+    <form method="post">
+        {{#hata}}<div class="notification is-danger">{{hata}}</div>{{/hata}}
+        <div class="field"><label class="label">Doğrulama Kodu</label><div class="control"><input class="input" type="text" name="kod" required></div></div>
+        <div class="field"><button class="button is-success is-fullwidth">Giriş Yap</button></div>
+    </form>
+</div>
+</section>
+</body>
+</html>

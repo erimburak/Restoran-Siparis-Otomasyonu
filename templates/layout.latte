@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stok Uygulaması</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <section class="section">
+    {* ... gerisi aynı ... *}
+    <section class="section">
+        <div class="container">
+                    <h1 class="title is-2 has-text-centered">Erim Cafe Sipariş Otomasyonu</h1>
+        <div class="tabs is-centered">
+            <ul>
+                <li n:class="isset($aktifSayfa) && $aktifSayfa === 'urunler' ? 'is-active'">
+                    <a href="latte.php">
+                        <span class="icon is-small"><i class="fas fa-box"></i></span>
+                        <span>Ürün Yönetimi</span>
+                    </a>
+                </li>
+                <li n:class="isset($aktifSayfa) && $aktifSayfa === 'masalar' ? 'is-active'">
+                    <a href="masalar.php">
+                        <span class="icon is-small"><i class="fas fa-table"></i></span>
+                        <span>Masa Yönetimi</span>
+                    </a>
+                </li>
+                <li n:class="isset($aktifSayfa) && $aktifSayfa === 'siparisler' ? 'is-active'">
+                    <a href="latte.php?action=siparisler">
+                        <span class="icon is-small"><i class="fas fa-receipt"></i></span>
+                        <span>Aktif Siparişler</span>
+                    </a>
+                </li>
+                {* Müşteri Menüsü linki buradan kaldırıldı *}
+            </ul>
+        </div>
+
+            {* Eğer bir mesaj varsa, onu gösteriyoruz *}
+
+            {* --- EKSİK OLAN VE EKLENEN KRİTİK BÖLÜM --- *}
+            {block content}
+                {* Diğer şablonların içeriği tam olarak bu noktaya gelecek *}
+            {/block}
+            {* -------------------------------------------- *}
+
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    {if isset($flash) && $flash}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: {$flash['type'] === 'is-danger' ? 'error' : 'success'},
+                title: {$flash['message']},
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true
+            });
+        });
+    </script>
+    {/if}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmLinks = document.querySelectorAll('.js-confirm');
+            confirmLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const message = this.dataset.message;
+                    const href = this.href;
+                    Swal.fire({
+                        title: 'Emin misiniz?', text: message, icon: 'warning',
+                        showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33',
+                        confirmButtonText: 'Evet, eminim!', cancelButtonText: 'İptal'
+                    }).then((result) => {
+                        if (result.isConfirmed) { window.location.href = href; }
+                    });
+                });
+            });
+            const productForm = document.getElementById('product-form');
+            if (productForm) {
+                productForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Kaydetmek istediğinize emin misiniz?', text: "Değişiklikler veritabanına işlenecek.", icon: 'question',
+                        showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33',
+                        confirmButtonText: 'Evet, kaydet!', cancelButtonText: 'İptal'
+                    }).then((result) => {
+                        if (result.isConfirmed) { productForm.submit(); }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

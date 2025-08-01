@@ -1,0 +1,55 @@
+{layout 'layout.latte'}
+
+{block content}
+    <h1 class="title">Aktif Siparişler</h1>
+    {if empty($siparisler)}
+        <div class="notification is-warning">Şu anda yeni sipariş bulunmuyor.</div>
+    {else}
+        <div class="columns is-multiline">
+            {foreach $siparisler as $siparis}
+                <div class="column is-one-third">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                {$siparis['masa_adi']} - Sipariş #{$siparis['id']}
+                            </p>
+                            <span class="card-header-icon">
+                                {if $siparis['durum'] === 'Yeni'}
+                                    <span class="tag is-danger">Yeni</span>
+                                {elseif $siparis['durum'] === 'Hazırlanıyor'}
+                                    <span class="tag is-info">Hazırlanıyor</span>
+                                {/if}
+                            </span>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <strong>Ürünler:</strong><br>
+                                {$siparis['urun_listesi']|noescape}
+                                <br>
+                                <time>Zaman: {$siparis['siparis_zamani']|date:'H:i:s - d M'}</time>
+                            </div>
+                        </div>
+                        {* ... <div class="card"> ... *}
+                        <footer class="card-footer">
+                            {if $siparis['durum'] === 'Yeni'}
+                                <a href="latte.php?action=siparis_hazirlaniyor&id={$siparis['id']}" class="card-footer-item has-text-info js-confirm" data-message="Sipariş 'hazırlanıyor' olarak işaretlenecek. Emin misiniz?">
+                                    <span class="icon"><i class="fas fa-fire"></i></span> Hazırlanıyor
+                                </a>
+                            {/if}
+                            {if $siparis['durum'] === 'Hazırlanıyor'}
+                                <a href="latte.php?action=siparis_tamamla&id={$siparis['id']}" class="card-footer-item has-text-success js-confirm" data-message="Sipariş 'tamamlandı' olarak işaretlenecek. Emin misiniz?">
+                                    <span class="icon"><i class="fas fa-check"></i></span> Tamamlandı
+                                </a>
+                            {/if}
+                            {* --- YENİ İPTAL BUTONU --- *}
+                            <a href="latte.php?action=siparis_iptal&id={$siparis['id']}" class="card-footer-item has-text-danger js-confirm" data-message="Bu sipariş iptal edilecek ve listeden kaldırılacak. Emin misiniz?">
+                                <span class="icon"><i class="fas fa-times"></i></span> İptal Et
+                            </a>
+                        </footer>
+                        {* ... </div> ... *}
+                    </div>
+                </div>
+            {/foreach}
+        </div>
+    {/if}
+{/block}

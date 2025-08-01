@@ -1,0 +1,53 @@
+{layout 'layout.latte'}
+
+{block content}
+    <div class="level">
+        <div class="level-left"><h1 class="title">Masa Yönetimi</h1></div>
+        <div class="level-right">
+            <a href="masa_qr_generator.php" class="button is-link js-confirm" data-message="Tüm masaların QR kodları yeniden oluşturulacak. Emin misiniz?">
+                <span class="icon"><i class="fas fa-sync-alt"></i></span>
+                <span>Tüm QR Kodları Oluştur/Yenile</span>
+            </a>
+        </div>
+    </div>
+
+    <table class="table is-fullwidth is-bordered is-hoverable">
+        <thead>
+            <tr>
+                <th>Masa Adı</th>
+                <th>Durum</th>
+                <th>QR Kodu</th>
+                <th class="has-text-right">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $masalar as $masa}
+            {* Aktif siparişi olan masanın satırını yeşil yapıyoruz *}
+            <tr n:class="$masa['aktif_siparis_sayisi'] > 0 ? 'is-selected'">
+                <td><strong>{$masa['masa_adi']}</strong></td>
+                <td>
+                    {if $masa['aktif_siparis_sayisi'] > 0}
+                        <span class="tag is-success">{$masa['aktif_siparis_sayisi']} Aktif Sipariş</span>
+                    {else}
+                        <span class="tag">Boş</span>
+                    {/if}
+                </td>
+                <td>
+                    {if $masa['qr_code_path']}
+                        <a href="{$masa['qr_code_path']}" class="button is-small is-black is-inverted" target="_blank">Görüntüle</a>
+                    {else}
+                        <span class="tag is-warning">Oluşturulmadı</span>
+                    {/if}
+                </td>
+                <td class="has-text-right">
+                    <a href="masalar.php?action=resetle&id={$masa['id']}" class="button is-small is-danger js-confirm" 
+                       data-message="DİKKAT! {$masa['masa_adi']} için TÜM sipariş geçmişi kalıcı olarak silinecek. Bu işlem geri alınamaz. Emin misiniz?">
+                        <span class="icon"><i class="fas fa-bomb"></i></span>
+                        <span>Masayı Resetle</span>
+                    </a>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+{/block}

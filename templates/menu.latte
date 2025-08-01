@@ -1,0 +1,88 @@
+{layout 'layout_musteri.latte'}
+
+{block content}
+    <h1 class="title">Hoş Geldiniz - Masa {$masaId}</h1>
+
+    <div class="tabs is-boxed">
+        <ul id="menu-tabs">
+            <li class="is-active" data-tab="1"><a><span class="icon"><i class="fas fa-book-open"></i></span><span>Menü</span></a></li>
+            <li data-tab="2"><a><span class="icon"><i class="fas fa-shopping-cart"></i></span><span>Sepetim ({count($sepet)})</span></a></li>
+            <li data-tab="3"><a><span class="icon"><i class="fas fa-history"></i></span><span>Siparişlerim</span></a></li>
+        </ul>
+    </div>
+
+    <div>
+        {* --- TAB 1: ÜRÜN MENÜSÜ --- *}
+        <div class="tab-content" id="tab-1">
+            <table class="table is-fullwidth is-hoverable">
+                <thead><tr><th>Ürün</th><th>Fiyat</th><th></th></tr></thead>
+                <tbody>
+                    {foreach $urunler as $urun}
+                    <tr>
+                        <td><strong>{$urun['ad']}</strong></td><td>{$urun['fiyat']} TL</td>
+                        <td class="has-text-right">
+                            <form action="menu.php?masa={$masaId}" method="post" style="display:inline;">
+                                <input type="hidden" name="urun_id" value="{$urun['id']}">
+                                <button class="button is-small is-success">Sepete Ekle</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+
+        {* --- TAB 2: ALIŞVERİŞ SEPETİ --- *}
+        <div class="tab-content is-hidden" id="tab-2">
+            <div class="box">
+                <h2 class="title is-4">Sipariş Sepetiniz</h2>
+                {if empty($sepet)}
+                    <p>Sepetiniz şu anda boş. Menü sekmesinden ürün ekleyebilirsiniz.</p>
+                {else}
+                    <ul>{foreach $sepet as $item}<li>{$item['ad']} - <strong>{$item['adet']} adet</strong></li>{/foreach}</ul><hr>
+                    <p class="is-size-5"><strong>Toplam: {$toplamFiyat} TL</strong></p><br>
+                    <a href="siparis_ver.php" class="button is-primary is-fullwidth js-confirm" data-message="Siparişiniz mutfağa gönderilecek. Onaylıyor musunuz?">Siparişi Onayla ve Gönder</a>
+                {/if}
+            </div>
+        </div>
+
+        {* --- TAB 3: ÖNCEKİ SİPARİŞLER --- *}
+        <div class="tab-content is-hidden" id="tab-3">
+            {if !$musteriVar}
+                <div class="notification is-warning">Geçmiş siparişlerinizi görebilmek için lütfen önce bir sipariş verin.</div>
+            {else}
+                <h3 class="title is-4">Aktif Siparişleriniz</h3>
+                {if empty($aktifSiparisler)}<p>Şu anda mutfakta hazırlanan bir siparişiniz bulunmuyor.</p>{else}
+                    {foreach $aktifSiparisler as $siparis}
+                    <div class="box">
+                        <p><strong>Sipariş #{$siparis['id']}</strong><span class="tag is-info is-pulled-right">{$siparis['durum']}</span></p>
+                        <a href="siparis_takip.php?id={$siparis['id']}" class="button is-small is-link is-outlined mt-2">Canlı Takip Et</a>
+                    </div>
+                    {/foreach}
+                {/if}
+                <hr>
+                <h3 class="title is-4 mt-5">Geçmiş Siparişleriniz</h3>
+                {if empty($gecmisSiparisler)}<p>Daha önce tamamlanmış bir siparişiniz bulunmuyor.</p>{else}
+                    {foreach $gecmisSiparisler as $siparis}
+                    <div class="box"><p><strong>Sipariş #{$siparis['id']}</strong><span class="tag is-success is-pulled-right">{$siparis['durum']}</span></p></div>
+                    {/foreach}
+                {/if}
+            {/if}
+        </div>
+    </div>
+
+    <script>
+        // Basit bir tab (sekme) değiştirme scripti
+        const tabs = document.querySelectorAll('#menu-tabs li');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                tabs.forEach(t => t.classList.remove('is-active'));
+                tabContents.forEach(c => c.classList.add('is-hidden'));
+                tab.classList.add('is-active');
+                document.getElementById('tab-' + tabId).classList.remove('is-hidden');
+            });
+        });
+    </script>
+{/block}

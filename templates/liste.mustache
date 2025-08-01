@@ -1,0 +1,31 @@
+<a href="mustache.php?action=ekle" class="button is-primary mb-4">
+    <span class="icon"><i class="fas fa-plus"></i></span>
+    <span>Yeni Ürün Ekle</span>
+</a>
+
+<table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+    <thead>
+        <tr><th>ID</th><th>Ürün Adı</th><th>Stok Adedi</th><th>Fiyat</th><th>İşlemler</th></tr>
+    </thead>
+    <tbody>
+        {{#urunler}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{ad}}</td>
+            <td>{{stok}}</td>
+            <td>{{fiyat}} TL</td>
+            <td>
+                <a href="mustache.php?action=duzenle&id={{id}}" class="button is-small is-info">
+                    <span class="icon"><i class="fas fa-edit"></i></span>
+                </a>
+                <a href="mustache.php?action=sil&id={{id}}" class="button is-small is-danger" onclick="return confirm('Emin misiniz?')">
+                    <span class="icon"><i class="fas fa-trash"></i></span>
+                </a>
+            </td>
+        </tr>
+        {{/urunler}}
+        {{^urunler}}
+        <tr><td colspan="5" class="has-text-centered">Henüz hiç ürün eklenmemiş.</td></tr>
+        {{/urunler}}
+    </tbody>
+</table>

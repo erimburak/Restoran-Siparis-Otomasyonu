@@ -1,0 +1,14 @@
+{layout 'layout.latte'}
+{block content}
+    <h2 class="title is-3">{$formBaslik}</h2>
+
+    <form action="latte.php?action=kaydet" method="post" id="product-form">
+        {if $urun}
+            <input type="hidden" name="id" value="{$urun['id']}">
+        {/if}
+        <div class="field"><label class="label">Ürün Adı</label><div class="control"><input class="input" type="text" name="ad" placeholder="Örn: Kırmızı Kalem" value="{$urun['ad'] ?? ''}" required></div></div>
+        <div class="field"><label class="label">Stok Adedi</label><div class="control"><input class="input" type="number" name="stok" placeholder="Örn: 100" value="{$urun['stok'] ?? 0}" required></div></div>
+        <div class="field"><label class="label">Fiyat (TL)</label><div class="control"><input class="input" type="text" name="fiyat" placeholder="Örn: 25.50" value="{$urun['fiyat'] ?? 0.0}" required></div></div>
+        <div class="field is-grouped"><div class="control"><button class="button is-link">Kaydet</button></div><div class="control"><a href="latte.php" class="button is-link is-light">İptal</a></div></div>
+    </form>
+{/block}
