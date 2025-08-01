@@ -2,8 +2,8 @@
 
 Bu proje, modern PHP framework'lerinin (Laravel, CakePHP, Nette) arkasındaki mimariyi anlama hedefiyle, standart (düz) PHP kullanılarak sıfırdan geliştirilmiş tam fonksiyonel bir Restoran Sipariş Otomasyonu'dur. "Yaparak öğrenme" felsefesiyle, bir fikrin nasıl adım adım ete kemiğe büründüğünün canlı bir kanıtıdır.
 
-![Sipariş Takip Ekranı](https://i.imgur.com/83p1y3s.png)
-*(Bu görseli projenizden aldığınız daha güncel bir ekran görüntüsü ile değiştirebilirsiniz.)*
+<img width="1748" height="692" alt="image" src="https://github.com/user-attachments/assets/06783566-93a8-426b-b927-d18b3bea96ec" />
+
 
 ## 📖 Projenin Hikayesi
 
@@ -12,13 +12,22 @@ Her şey, sadece teoride kalmak yerine, bir uygulamanın mimarisini, veri akış
 ## 🚀 Yetenekler ve Özellikler
 
 ### Yönetim Paneli
+
+<img width="1802" height="684" alt="image" src="https://github.com/user-attachments/assets/06e89b7b-b313-481b-8c0c-ca57154aacfb" />
+
 * ✅ **Ürün & Stok Yönetimi:** Tam CRUD (Ekle/Sil/Güncelle/Listele) yetenekleri ve verilen siparişlerle stokların otomatik güncellenmesi.
 * ✅ **Masa Yönetimi:** Masaları listeleme, aktif siparişi olan masaları anlık olarak görsel olarak ayırt etme ve masanın tüm sipariş geçmişini tek tuşla sıfırlama.
+<img width="1803" height="674" alt="image" src="https://github.com/user-attachments/assets/5a0ce193-ff21-4733-b709-bcb8fe0e3283" />
+
 * ✅ **Canlı Sipariş Ekranı:** Yeni gelen ve hazırlanmakta olan siparişleri anlık olarak görüntüleme.
 * ✅ **Sipariş Durum Yönetimi:** Gelen siparişlerin durumunu "Hazırlanıyor", "Tamamlandı" veya "İptal Edildi" olarak güncelleme.
 * ✅ **Dinamik QR Kod Üretimi:** Yönetim panelinden tek tuşla tüm masalar için veritabanına kayıtlı, o masaya özel menü QR kodları oluşturma ve yenileme.
 
+
+
 ### Müşteri Arayüzü
+<img width="1737" height="854" alt="image" src="https://github.com/user-attachments/assets/b5d598f2-12f2-4255-a0ff-6fbff81db401" />
+
 * ✅ **QR Kod ile Sipariş:** Her masaya özel QR kod ile doğrudan o masanın interaktif sipariş ekranına erişim.
 * ✅ **İnteraktif Sepet:** `Session` tabanlı alışveriş sepeti ile kolayca ürün ekleme ve sipariş oluşturma.
 * ✅ **Canlı Sipariş Takibi:** **AJAX** ile geliştirilmiş, sayfa yenilenmesine gerek kalmadan sipariş durumlarının ("Alındı", "Hazırlanıor", "Tamamlandı", "İptal") anlık olarak güncellendiği canlı takip ekranı.
@@ -62,10 +71,15 @@ Her şey, sadece teoride kalmak yerine, bir uygulamanın mimarisini, veri akış
 3.  **Veritabanını Kurun:**
     * phpMyAdmin veya benzeri bir araç kullanarak `stok_yonetimi` adında, `utf8mb4_turkish_ci` karşılaştırmalı yeni bir veritabanı oluşturun.
     * Oluşturduğunuz veritabanını seçip "SQL" sekmesine tıklayın ve aşağıdaki kodun tamamını yapıştırıp çalıştırın.
-  
-      
-   Veritabanı Kurulumu için Gerekli SQL Kodunu Göster
-    '
+
+
+    <img width="1085" height="233" alt="image" src="https://github.com/user-attachments/assets/355bc37f-baac-4fa5-b0b8-d6394eebac7d" />
+
+
+
+    <details>
+    <summary>Veritabanı Kurulumu için Gerekli SQL Kodunu Göster</summary>
+
     ```sql
     CREATE TABLE `musteriler` ( `id` int(11) NOT NULL AUTO_INCREMENT, `benzersiz_kimlik` varchar(255) COLLATE utf8mb4_turkish_ci NOT NULL, `olusturulma_zamani` datetime NOT NULL DEFAULT current_timestamp(), PRIMARY KEY (`id`), UNIQUE KEY `benzersiz_kimlik` (`benzersiz_kimlik`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
     CREATE TABLE `masalar` ( `id` int(11) NOT NULL AUTO_INCREMENT, `masa_adi` varchar(255) COLLATE utf8mb4_turkish_ci NOT NULL, `qr_code_path` varchar(255) COLLATE utf8mb4_turkish_ci DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
