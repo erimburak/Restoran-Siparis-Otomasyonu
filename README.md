@@ -62,10 +62,10 @@ Her şey, sadece teoride kalmak yerine, bir uygulamanın mimarisini, veri akış
 3.  **Veritabanını Kurun:**
     * phpMyAdmin veya benzeri bir araç kullanarak `stok_yonetimi` adında, `utf8mb4_turkish_ci` karşılaştırmalı yeni bir veritabanı oluşturun.
     * Oluşturduğunuz veritabanını seçip "SQL" sekmesine tıklayın ve aşağıdaki kodun tamamını yapıştırıp çalıştırın.
-
-    <details>
-    <summary>Veritabanı Kurulumu için Gerekli SQL Kodunu Göster</summary>
-
+  
+      
+   Veritabanı Kurulumu için Gerekli SQL Kodunu Göster
+    '
     ```sql
     CREATE TABLE `musteriler` ( `id` int(11) NOT NULL AUTO_INCREMENT, `benzersiz_kimlik` varchar(255) COLLATE utf8mb4_turkish_ci NOT NULL, `olusturulma_zamani` datetime NOT NULL DEFAULT current_timestamp(), PRIMARY KEY (`id`), UNIQUE KEY `benzersiz_kimlik` (`benzersiz_kimlik`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
     CREATE TABLE `masalar` ( `id` int(11) NOT NULL AUTO_INCREMENT, `masa_adi` varchar(255) COLLATE utf8mb4_turkish_ci NOT NULL, `qr_code_path` varchar(255) COLLATE utf8mb4_turkish_ci DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
